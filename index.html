@@ -5,12 +5,15 @@
 	<title>MNE-PMO</title>
 
 	<link type="image/ico" rel="shortcut icon" href="img/favicon.ico">
-	<link type="text/css" rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link type="text/css" rel="stylesheet"
+		href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.css">
 	<link type="text/css" rel="stylesheet" href="style/styles.css">
 </head>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"
+	integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://www.gstatic.com/firebasejs/ui/4.6.1/firebase-ui-auth.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/firebasejs/8.1.1/firebase-app.js"></script>
 <script type="text/javascript" src="https://www.gstatic.com/firebasejs/8.1.1/firebase-auth.js"></script>
@@ -24,54 +27,93 @@
 </script>
 
 <script type="text/javascript">
-	function setLoginStatus(menuItem) {
-		switch (menuItem) {
-			case 'in':
-				$("#gantts").show();
-				$("#logout").show();
-				break;
-			case 'out':
-			default:
-				$("#gantts").hide();
-				$("#logout").hide();
-				break;
-	}	}
-</script>
-
-<script type="text/javascript">
-	var alreadyRendered = false;
-	function initApp() {
-		firebase.auth().onAuthStateChanged(function (user) {
-			console.log(user)
-			if (user) {
-				setLoginStatus('in');
-				ui.reset();
-			} else {
-				setLoginStatus('out');
-				ui.start('#firebaseui-auth-container', firebaseUiConfig);
-				alreadyRendered = true;
+	/**
+	 * Displays the UI for a signed in user.
+	 * @param {!firebase.User} user
+	 */
+	var handleSignedInUser = function (user) {
+		document.getElementById('user-in').style.display = 'block';
+		document.getElementById('user-id').style.display = 'block';
+		document.getElementById('user-id').textContent = user.displayName;
+		if (user.photoURL) {
+			var photoURL = user.photoURL;
+			// Append size to the photo URL for Google hosted images to avoid requesting
+			// the image with its original resolution (using more bandwidth than needed)
+			// when it is going to be presented in smaller size.
+			if ((photoURL.indexOf('googleusercontent.com') != -1) ||
+				(photoURL.indexOf('ggpht.com') != -1)) {
+				photoURL = photoURL + '?sz=' +
+					document.getElementById('photo').clientHeight;
 			}
-		}, (error)=>console.log(error));
+			document.getElementById('photo').src = photoURL;
+			document.getElementById('photo').style.display = 'block';
+		} else {
+			document.getElementById('photo').style.display = 'none';
+			document.getElementById('user-id').style.display = 'none';
+			document.getElementById('user-in').style.display = 'none';
+		}
 	};
-	$(document).ready(()=>initApp());
+
+
+	/**
+	 * Displays the UI for a signed out user.
+	 */
+	var handleSignedOutUser = function () {
+		document.getElementById('photo').style.display = 'none';
+		document.getElementById('user-id').style.display = 'none';
+		document.getElementById('user-in').style.display = 'none';
+		ui.start('#firebaseui-auth-container', firebaseUiConfig);
+	};
+
+	/**
+	 * Listen to change in auth state so it displays the correct UI for when
+	 * the user is signed in or not.
+	 */
+	firebase.auth().onAuthStateChanged(function (user) {
+		user ? handleSignedInUser(user) : handleSignedOutUser();
+	});
+
+	function initApp() {
+		console.log('initApp')
+		//		firebase.auth().onAuthStateChanged(function (user) {
+		//			console.log(user)
+		//		}, (error) => console.log(error));
+	};
+	$(document).ready(() => initApp());
 </script>
 
 <body>
-	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-		<a class="navbar-brand" href="#">MNE PMO</a>
-		<ul class="nav navbar-nav">
-			<li class="nav-item">
-				<a id="gantts" class="nav-link" href="pmo.html">Gantts</a>
-			</li>
-		</ul>
-		<ul class="navbar-nav ml-auto">
-			<li class="nav-item">
-		</ul>
-	</nav>
-	<div id="firebaseui-auth-container"></div>
+	<div id="top_menu">
+		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+			<a class="navbar-brand" href="#">MNE PMO</a>
+			<ul class="nav navbar-nav">
+				<li class="nav-item">
+					<a id="gantts" class="nav-link" href="pmo.html">Gantts</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<img id="photo" class="nav-link hidden" src="#">
+				</li>
+				<li class="nav-item">
+					<a id="user-id" class="nav-link hidden" href="#"></a>
+				</li>
+				<li class="nav-item">
+					<a id="user-in" class="nav-link hidden" href="#">Logout</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div id="firebaseui_area">
+		<div id="firebaseui-auth-container"></div>
+	</div>
 </body>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+	integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+</script>
+<script type="text/javascript" src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+	integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+</script>
 
 </html>
