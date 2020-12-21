@@ -32,6 +32,7 @@
 	 * @param {!firebase.User} user
 	 */
 	var handleSignedInUser = function (user) {
+		console.log('in handleSignedInUser');
 		document.getElementById('gantts').style.display = 'block';
 		document.getElementById('user-in').style.display = 'block';
 		document.getElementById('user-id').style.display = 'block';
@@ -61,6 +62,7 @@
 	 * Displays the UI for a signed out user.
 	 */
 	var handleSignedOutUser = function () {
+		console.log('in handleSignedOutUser');
 		document.getElementById('gantts').style.display = 'none';
 		document.getElementById('photo').style.display = 'none';
 		document.getElementById('user-id').style.display = 'none';
