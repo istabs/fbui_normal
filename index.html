@@ -32,6 +32,7 @@
 	 * @param {!firebase.User} user
 	 */
 	var handleSignedInUser = function (user) {
+		document.getElementById('gantts').style.display = 'block';
 		document.getElementById('user-in').style.display = 'block';
 		document.getElementById('user-id').style.display = 'block';
 		document.getElementById('user-id').textContent = user.displayName;
@@ -48,6 +49,7 @@
 			document.getElementById('photo').src = photoURL;
 			document.getElementById('photo').style.display = 'block';
 		} else {
+			document.getElementById('gantts').style.display = 'none';
 			document.getElementById('photo').style.display = 'none';
 			document.getElementById('user-id').style.display = 'none';
 			document.getElementById('user-in').style.display = 'none';
@@ -59,6 +61,7 @@
 	 * Displays the UI for a signed out user.
 	 */
 	var handleSignedOutUser = function () {
+		document.getElementById('gantts').style.display = 'none';
 		document.getElementById('photo').style.display = 'none';
 		document.getElementById('user-id').style.display = 'none';
 		document.getElementById('user-in').style.display = 'none';
