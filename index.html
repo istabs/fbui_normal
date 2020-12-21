@@ -86,11 +86,18 @@
 		}, (error) => console.log(error));
 	};
 
-	$(document).ready(function() { initApp(); });
+	$(document).ready(function () {
+		console.log('in initApp')
+		firebase.auth().onAuthStateChanged(function (user) {
+			console.log(user);
+			user ? handleSignedInUser(user) : handleSignedOutUser();
+		}, (error) => console.log(error));
+	});
 
 </script>
 
 <body>
+
 	<div id="top_menu">
 		<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
 			<a class="navbar-brand" href="#">MNE PMO</a>
@@ -114,9 +121,11 @@
 			</ul>
 		</nav>
 	</div>
+
 	<div id="firebaseui_area">
 		<div id="firebaseui-auth-container"></div>
 	</div>
+
 </body>
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
