@@ -79,11 +79,13 @@
 	function initApp() {
 		console.log('initApp')
 		firebase.auth().onAuthStateChanged(function (user) {
+			console.log(user);
 			user ? handleSignedInUser(user) : handleSignedOutUser();
 		}, (error) => console.log(error));
 	};
 
 	$(document).ready(function() { initApp(); });
+
 </script>
 
 <body>
