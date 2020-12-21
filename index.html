@@ -102,7 +102,9 @@
 					<a id="user-id" class="nav-link hidden" href="#"></a>
 				</li>
 				<li class="nav-item">
-					<a id="user-in" class="nav-link hidden" href="#">Logout</a>
+					<a id="user-in" class="nav-link hidden" onclick="firebase.auth().signOut().then(function() {
+						handleSignedOutUser();
+					})">Logout</a>
 				</li>
 			</ul>
 		</nav>
