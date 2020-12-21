@@ -92,7 +92,7 @@
 	};
 	*/
 
-	$(document).ready(function () {
+	window.addEventListener('load', (function () {
 		console.log('in initApp')
 		firebase.auth().onAuthStateChanged(function (user) {
 			console.log('in onAuthStateChanged');
@@ -102,7 +102,7 @@
 			console.log('onAuthStateChanged error');
 			console.log(error);
 		});
-	});
+	}));
 
 </script>
 
