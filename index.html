@@ -72,17 +72,18 @@
 	 * Listen to change in auth state so it displays the correct UI for when
 	 * the user is signed in or not.
 	 */
-	firebase.auth().onAuthStateChanged(function (user) {
-		user ? handleSignedInUser(user) : handleSignedOutUser();
-	});
+	//firebase.auth().onAuthStateChanged(function (user) {
+	//	user ? handleSignedInUser(user) : handleSignedOutUser();
+	//});
 
 	function initApp() {
 		console.log('initApp')
-		//		firebase.auth().onAuthStateChanged(function (user) {
-		//			console.log(user)
-		//		}, (error) => console.log(error));
+		firebase.auth().onAuthStateChanged(function (user) {
+			user ? handleSignedInUser(user) : handleSignedOutUser();
+		}, (error) => console.log(error));
 	};
-	$(document).ready(() => initApp());
+
+	$(document).ready(function() { initApp(); });
 </script>
 
 <body>
