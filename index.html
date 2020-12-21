@@ -98,7 +98,10 @@
 			console.log('in onAuthStateChanged');
 			console.log(user);
 			user ? handleSignedInUser(user) : handleSignedOutUser();
-		}, (error) => console.log(error));
+		}, function (error) {
+			console.log('onAuthStateChanged error');
+			console.log(error);
+		});
 	});
 
 </script>
