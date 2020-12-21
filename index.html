@@ -43,8 +43,8 @@
 			// when it is going to be presented in smaller size.
 			if ((photoURL.indexOf('googleusercontent.com') != -1) ||
 				(photoURL.indexOf('ggpht.com') != -1)) {
-				photoURL = photoURL + '?sz=' +
-					document.getElementById('photo').clientHeight;
+				photoURL = photoURL + '?sz=' + '1em';
+				//document.getElementById('photo').clientHeight;
 			}
 			document.getElementById('photo').src = photoURL;
 			document.getElementById('photo').style.display = 'block';
