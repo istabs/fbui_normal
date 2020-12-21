@@ -79,7 +79,7 @@
 	//});
 
 	function initApp() {
-		console.log('initApp')
+		console.log('in initApp')
 		firebase.auth().onAuthStateChanged(function (user) {
 			console.log(user);
 			user ? handleSignedInUser(user) : handleSignedOutUser();
